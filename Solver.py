@@ -1,10 +1,10 @@
-import pathlib
+from pathlib import Path
 from collections import defaultdict
 
-with open(pathlib.Path(__file__).parent / "FiveLetterAlphaWords.txt") as RawFLAWList:
+with open(Path(__file__).parent / "FiveLetterAlphaWords.txt") as RawFLAWList:
     FLAWList = RawFLAWList.read().splitlines()
 
-with open(pathlib.Path(__file__).parent / "config.cfg") as RawConfig:
+with open(Path(__file__).parent / "config.cfg") as RawConfig:
     Config = RawConfig.read().splitlines()
 
     Letters = []
@@ -41,7 +41,7 @@ def bestword(words):
             charhashmap[char] += 1
     
     
-with open(pathlib.Path(__file__).parent / "FiveLetterAlphaWords.txt") as RawFLAWList:
+with open(Path(__file__).parent / "FiveLetterAlphaWords.txt") as RawFLAWList:
     words = RawFLAWList.read().splitlines()
     print(parsewords(greens,oranges,grey, words))
             
