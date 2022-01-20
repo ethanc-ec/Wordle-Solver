@@ -39,11 +39,26 @@ def bestword(words):
     for word in words:
         for char in word:
             charhashmap[char] += 1
+    curmax = 0
+    maxval = set()
+    for word in words:
+        summ = 0
+        for char in word:
+            summ += charhashmap[char]
+        if summ > curmax:
+            curmax = summ
+            maxval = set([word])
+        elif summ == curmax:
+            maxval.add(word)
+    return maxval
+
+    
     
     
 with open(Path(__file__).parent / "FiveLetterAlphaWords.txt") as RawFLAWList:
     words = RawFLAWList.read().splitlines()
     print(parsewords(greens,oranges,grey, words))
+    print(bestword(parsewords(greens,oranges,grey, words)))
             
                 
         
