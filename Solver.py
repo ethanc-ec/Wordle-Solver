@@ -26,7 +26,13 @@ def parsewords(green, orange, grey, words):
     newlist = set()
     for word in words:
         word = word[:5]
-        if checkgreens(green, word) and orange.issubset(charset := set(list(word))) and grey.isdisjoint(charset):
+        our_map = defaultdict(lambda:0)
+        for char in word:
+            our_map[char] += 1
+        for char in green:
+            our_map[char] -= 1
+
+        if checkgreens(green, word) and orange.issubset(charset := set(list(word))) and grey.isdisjoint(set([x for x in our_map.keys() if our_map[x] > 0])):
             newlist.add(word)
     return newlist
 def parseguesses(green, orange, grey, words):
@@ -84,11 +90,12 @@ def test_run(words):
     _greens = [None,None, None,None, None]
     _oranges = set()
     _grey = set()
+    possiblities = words
     while True:
         print(_greens)
         print(_oranges)
         print(_grey)
-        possiblities = parsewords(_greens,_oranges,_grey, words)
+        possiblities = parsewords(_greens,_oranges,_grey, possiblities)
         print("possible")
         print(possiblities)
         w = bestword(parseguesses(_greens,_oranges,_grey, words))
@@ -105,7 +112,12 @@ def test_run(words):
         orange = input("Insert all oranges, no spaces\n")
         _greens = [None if x == " " else x for x in green]
         _oranges = set(list(orange)).union(_oranges) - set(list(green))
-        greys = set(list(guess)) - set(list(green)) - set(list(orange))
+        our_map = defaultdict(lambda:0)
+        for char in guess:
+            our_map[char] += 1
+        for char in green + orange:
+            our_map[char] -= 1
+        greys = set([x for x in our_map.keys() if our_map[x] > 0])
         _grey.update(greys)
     
     
