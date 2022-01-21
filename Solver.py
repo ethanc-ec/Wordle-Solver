@@ -12,6 +12,7 @@ with open(Path(__file__).parent / "config.cfg") as RawConfig:
         splitI = val.split("=")
         Letters.append(splitI[1])
     print(Letters)
+    
 def checkgreens(green, word):
     for idx, val in enumerate(green):
         if val and word[idx] != val:
@@ -35,6 +36,7 @@ def parsewords(green, orange, grey, words):
         if checkgreens(green, word) and orange.issubset(charset := set(list(word))) and grey.isdisjoint(set([x for x in our_map.keys() if our_map[x] > 0])):
             newlist.add(word)
     return newlist
+
 def parseguesses(green, orange, grey, words):
     newlist = set()
     yesorange = set()
@@ -86,6 +88,7 @@ def bestword(words):
             elif summ == curmax:
                 maxval.add(word)
     return maxval.union(maxwithdupes)
+
 def test_run(words):
     _greens = [None,None, None,None, None]
     _oranges = set()
@@ -119,12 +122,14 @@ def test_run(words):
             our_map[char] -= 1
         greys = set([x for x in our_map.keys() if our_map[x] > 0])
         _grey.update(greys)
+        
     
-    
-    
-with open(Path(__file__).parent / "FiveLetterAlphaWords.txt") as RawFLAWList:
-    words = RawFLAWList.read().splitlines()
-    test_run(words)
-            
+def main():
+    with open(Path(__file__).parent / "FiveLetterAlphaWords.txt") as RawFLAWList:
+        words = RawFLAWList.read().splitlines()
+        test_run(words)
+
+if __name__ == "__main__":
+    main()
                 
         
