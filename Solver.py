@@ -117,7 +117,7 @@ def greeninput():
     greentest = input("Insert all green characters, spaces for non greens:\n")
     galphatest = greentest.replace(" ", "")
 
-    if galphatest.isalpha() and len(greentest) == 5:
+    if (galphatest.isalpha() and len(greentest) == 5) or greentest == "     ":
         return greentest
     else:
         print("Wrong input, try again\n")
