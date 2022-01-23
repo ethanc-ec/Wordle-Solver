@@ -1,23 +1,13 @@
 from pathlib import Path
 from collections import defaultdict
-
-with open(Path(__file__).parent / "FiveLetterAlphaWords.txt") as RawFLAWList:
-    FLAWList = RawFLAWList.read().splitlines()
-
-with open(Path(__file__).parent / "config.cfg") as RawConfig:
-    Config = RawConfig.read().splitlines()
-
-    Letters = []
-    for idx, val in enumerate(Config):
-        splitI = val.split("=")
-        Letters.append(splitI[1])
-    print(Letters)
+   
     
 def checkgreens(green, word):
     for idx, val in enumerate(green):
         if val and word[idx] != val:
             return False
     return True
+
 
 def parsewords(green, orange, grey, words):
     """Takes in 4 parameters:
@@ -37,6 +27,7 @@ def parsewords(green, orange, grey, words):
             newlist.add(word)
     return newlist
 
+
 def parseguesses(green, orange, grey, words):
     newlist = set()
     yesorange = set()
@@ -50,9 +41,6 @@ def parseguesses(green, orange, grey, words):
         return yesorange
     else:
         return newlist
-
-
-
 
 
 def bestword(words):
@@ -89,30 +77,31 @@ def bestword(words):
                 maxval.add(word)
     return maxval.union(maxwithdupes)
 
+
 def test_run(words):
-    _greens = [None,None, None,None, None]
+    _greens = [None, None, None, None, None]
     _oranges = set()
     _grey = set()
     possiblities = words
     while True:
-        print(_greens)
-        print(_oranges)
-        print(_grey)
+        print("Green letters:", _greens)
+        if len(_oranges) == 0:
+            print("There are no orange letters")
+        else:
+            print("Orange letters:", _oranges)  
+        print("Grey letters:", _grey)
         possiblities = parsewords(_greens,_oranges,_grey, possiblities)
-        print("possible")
+        print("Possible words:")
         print(possiblities)
         w = bestword(parseguesses(_greens,_oranges,_grey, words))
         if len(possiblities) == 1:
             print("solve found: " + list(possiblities)[0])
             break
-        ("Best words for current params:")
+        print("Best words using current params:")
         print(w)
-        guess = input("Type your guess\n")
-        green = input("Insert all green characters, spaces for non greens\n")
-        if len(green) != 5:
-            print("Inputted wrong, redo please\n")
-            continue
-        orange = input("Insert all oranges, no spaces\n")
+        guess = input("Type your guess:\n")
+        green = greeninput()
+        orange = input("Insert all oranges, no spaces:\n")
         _greens = [None if x == " " else x for x in green]
         _oranges = set(list(orange)).union(_oranges) - set(list(green))
         our_map = defaultdict(lambda:0)
@@ -123,9 +112,20 @@ def test_run(words):
         greys = set([x for x in our_map.keys() if our_map[x] > 0])
         _grey.update(greys)
         
+
+def greeninput():
+    greentest = input("Insert all green characters, spaces for non greens:\n")
+    galphatest = greentest.replace(" ", "")
+
+    if galphatest.isalpha() and len(greentest) == 5:
+        return greentest
+    else:
+        print("Wrong input, try again\n")
+        return greeninput()
+
     
 def main():
-    with open(Path(__file__).parent / "FiveLetterAlphaWords.txt") as RawFLAWList:
+    with open(Path(__file__).parent / "FLAW.txt") as RawFLAWList:
         words = RawFLAWList.read().splitlines()
         test_run(words)
 
