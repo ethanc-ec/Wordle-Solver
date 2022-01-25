@@ -79,6 +79,11 @@ def bestword(words):
 
 
 def test_run(words):
+    """
+    The current solve found part only gives the solution when you literally type it in.
+    We could swap to using seperate lists for the answers and guesses.
+    _greens gets messed up when the guess doesn't use the previous greens
+    """
     _greens = [None, None, None, None, None]
     _oranges = set()
     _grey = set()
@@ -101,8 +106,12 @@ def test_run(words):
         print(w)
         guess = input("Type your guess:\n")
         green = greeninput()
-        orange = input("Insert all oranges, no spaces:\n")
-        _greens = [None if x == " " else x for x in green]
+        orange = orangeinput()
+        
+        _greens = [None if x == " " else x for x in green] 
+        # Can't take x directly from green, overwrites _greens
+        # Check for letters that are already there 
+        
         _oranges = set(list(orange)).union(_oranges) - set(list(green))
         our_map = defaultdict(lambda:0)
         for char in guess:
@@ -123,11 +132,21 @@ def greeninput():
         print("Wrong input, try again\n")
         return greeninput()
 
+
+def orangeinput(): 
+    orangetest = input("Insert all oranges, no spaces:\n")
+    if (orangetest.isalpha() and len(orangetest) <= 5) or not orangetest:
+        return orangetest
+    else:
+        print("Wrong input, try again\n")
+        return orangeinput()
+    
     
 def main():
     with open(Path(__file__).parent / "FLAW.txt") as RawFLAWList:
         words = RawFLAWList.read().splitlines()
         test_run(words)
+
 
 if __name__ == "__main__":
     main()
