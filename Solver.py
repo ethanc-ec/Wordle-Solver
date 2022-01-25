@@ -1,7 +1,8 @@
 from pathlib import Path
 from collections import defaultdict
    
-    
+guess, green, orange = "", "", ""
+ 
 def checkgreens(green, word):
     for idx, val in enumerate(green):
         if val and word[idx] != val:
@@ -101,7 +102,7 @@ def test_run(words):
         print(w)
         guess = input("Type your guess:\n")
         green = greeninput()
-        orange = input("Insert all oranges, no spaces:\n")
+        orange = orangeinput()
         _greens = [None if x == " " else x for x in green]
         _oranges = set(list(orange)).union(_oranges) - set(list(green))
         our_map = defaultdict(lambda:0)
@@ -117,17 +118,34 @@ def greeninput():
     greentest = input("Insert all green characters, spaces for non greens:\n")
     galphatest = greentest.replace(" ", "")
 
+    for i in greentest:
+        if i in guess:
+            continue
+        else:
+            print("Wrong input, try again\n")
+            return greeninput()
+
     if (galphatest.isalpha() and len(greentest) == 5) or greentest == "     ":
         return greentest
     else:
         print("Wrong input, try again\n")
         return greeninput()
 
+
+def orangeinput():
+    orangetest = input("Insert all oranges, no spaces:\n")
+    if (orangetest.isalpha() and (5 - len(orangetest) - len(green) <= 5)) or not orangetest:
+        return orangetest
+    else:
+        print("Wrong input, try again\n")
+        return orangeinput()
+    
     
 def main():
     with open(Path(__file__).parent / "FLAW.txt") as RawFLAWList:
         words = RawFLAWList.read().splitlines()
         test_run(words)
+
 
 if __name__ == "__main__":
     main()
