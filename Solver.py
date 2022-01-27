@@ -99,8 +99,8 @@ def test_run(words):
         #print("Best words using current params:")
         #print(w)
         guess = input("Type your guess:\n")
-        green = greeninput(guess)
-        orange = orangeinput(green)
+        green = green_input(guess)
+        orange = orange_input(green)
         _greens = [None if x == " " else x for x in green]
         _oranges = set(list(orange)).union(_oranges) - set(list(green))
         our_map = defaultdict(lambda:0)
@@ -112,32 +112,32 @@ def test_run(words):
         _grey.update(greys)
         
 
-def greeninput(guess):
-    greentest = input("Insert all green characters, spaces for non greens:\n")
-    galphatest = greentest.replace(" ", "")
+def green_input(guess):
+    green_test = input("Insert all green characters, spaces for non greens:\n")
+    alpha_test_green = green_test.replace(" ", "")
 
-    for i in greentest:
-        if greentest != "     ":
+    for i in green_test:
+        if green_test != "     ":
             if i in guess or i == " ":
                 continue
             else:
                 print("Wrong input, try again\n")
-                return greeninput()
+                return green_input()
 
-    if (galphatest.isalpha() and len(greentest) == 5) or greentest == "     ":
-        return greentest
+    if (alpha_test_green.isalpha() and len(green_test) == 5) or green_test == "     ":
+        return green_test
     else:
         print("Wrong input, try again\n")
-        return greeninput()
+        return green_input()
 
 
-def orangeinput(green):
-    orangetest = input("Insert all oranges, no spaces:\n")
-    if (orangetest.isalpha() and (5 - len(orangetest) - len(green) <= 5)) or not orangetest:
-        return orangetest
+def orange_input(green):
+    orange_test = input("Insert all oranges, no spaces:\n")
+    if (orange_test.isalpha() and (5 - len(orange_test) - len(green) <= 5)) or not orange_test:
+        return orange_test
     else:
         print("Wrong input, try again\n")
-        return orangeinput()
+        return orange_input()
     
     
 def main():
