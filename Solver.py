@@ -1,7 +1,5 @@
 from pathlib import Path
 from collections import defaultdict
-   
-guess, green, orange = "", "", ""
  
 def checkgreens(green, word):
     for idx, val in enumerate(green):
@@ -94,15 +92,15 @@ def test_run(words):
         possiblities = parsewords(_greens,_oranges,_grey, possiblities)
         print("Possible words:")
         print(possiblities)
-        w = bestword(parseguesses(_greens,_oranges,_grey, words))
+        #w = bestword(parseguesses(_greens,_oranges,_grey, words))
         if len(possiblities) == 1:
             print("solve found: " + list(possiblities)[0])
             break
-        print("Best words using current params:")
-        print(w)
+        #print("Best words using current params:")
+        #print(w)
         guess = input("Type your guess:\n")
-        green = greeninput()
-        orange = orangeinput()
+        green = greeninput(guess)
+        orange = orangeinput(green)
         _greens = [None if x == " " else x for x in green]
         _oranges = set(list(orange)).union(_oranges) - set(list(green))
         our_map = defaultdict(lambda:0)
@@ -114,16 +112,17 @@ def test_run(words):
         _grey.update(greys)
         
 
-def greeninput():
+def greeninput(guess):
     greentest = input("Insert all green characters, spaces for non greens:\n")
     galphatest = greentest.replace(" ", "")
 
     for i in greentest:
-        if i in guess:
-            continue
-        else:
-            print("Wrong input, try again\n")
-            return greeninput()
+        if greentest != "     ":
+            if i in guess or i == " ":
+                continue
+            else:
+                print("Wrong input, try again\n")
+                return greeninput()
 
     if (galphatest.isalpha() and len(greentest) == 5) or greentest == "     ":
         return greentest
@@ -132,7 +131,7 @@ def greeninput():
         return greeninput()
 
 
-def orangeinput():
+def orangeinput(green):
     orangetest = input("Insert all oranges, no spaces:\n")
     if (orangetest.isalpha() and (5 - len(orangetest) - len(green) <= 5)) or not orangetest:
         return orangetest
