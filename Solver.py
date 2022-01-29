@@ -128,7 +128,7 @@ def green_input(guess):
         return green_test
     else:
         print("Wrong input, try again\n")
-        return green_input()
+        return green_input(guess)
 
 
 def orange_input(green):
