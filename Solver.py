@@ -9,8 +9,12 @@ def checkgreens(green, word):
 
 
 def parsewords(green, orange, grey, words):
-    """Takes in 4 parameters:
-    green a list containing all green characters and None as filler \norange a set of characters marked orange\ngrey a set of characters marked grey\nand words a set of words to parse through
+    """
+    Takes in 4 parameters:
+    green a list containing all green characters and None as filler 
+    orange a set of characters marked orange
+    grey a set of characters marked grey
+    and words a set of words to parse through
     returns a list of newly parsed words meeting the parameters
     """
     newlist = set()
@@ -124,7 +128,7 @@ def green_input(guess):
                 print("Wrong input, try again\n")
                 return green_input()
 
-    if (alpha_test_green.isalpha() and len(green_test) == 5) or green_test == "     ":
+    if (alpha_test_green.isalpha() and len(green_test) == 5) or not alpha_test_green:
         return green_test
     else:
         print("Wrong input, try again\n")
@@ -141,8 +145,8 @@ def orange_input(green):
     
     
 def main():
-    with open(Path(__file__).parent / "FLAW.txt") as RawFLAWList:
-        words = RawFLAWList.read().splitlines()
+    with open(Path(__file__).parent / "FLAW.txt") as raw_flaw_list:
+        words = raw_flaw_list.read().splitlines()
         test_run(words)
 
 
