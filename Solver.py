@@ -7,11 +7,14 @@ def checkgreens(green, word):
         if val and word[idx] != val:
             return False
     return True
+
+
 def checkgreyoranged(greyoranges, word):
     for idx, val in enumerate(greyoranges):
         if word[idx] in val:
             return False
     return True
+
 
 def parsewords(green, orange, grey, greyedoranges, words):
     """Takes in 4 parameters:
@@ -30,8 +33,6 @@ def parsewords(green, orange, grey, greyedoranges, words):
         if checkgreens(green, word) and orange.issubset(charset := set(list(word))) and grey.isdisjoint(set([x for x in our_map.keys() if our_map[x] > 0])) and checkgreyoranged(greyedoranges, word):
             newlist.add(word)
     return newlist
-
-
 
 
 def parseguesses(orange, grey, greyedoranges, words):
@@ -80,6 +81,7 @@ def bestguess(possible_words, guess_list):
                 maxval.add(word)
     return maxval.union(maxwithdupes)
 
+
 def bestword(words):
     """
     Takes in a list of words, finds the best word based on sum of occurrences of each letter
@@ -127,16 +129,21 @@ def test_run(words):
     _grey = set()
     possiblities = words
     guesslist = words
+    loop_number = 0
     while True:
+        print("Loop number: {}".format(loop_number))
         print("Green letters:", _greens)
         if len(_oranges) == 0:
             print("There are no orange letters")
         else:
-            print("Orange letters:", _oranges)  
-        print("Grey letters:", _grey)
+            print("Orange letters:", _oranges)
+        if len(_grey) == 0:
+            print("There are no grey letters")
+        else:
+            print("Grey letters:", _grey)
         possiblities = parsewords(_greens,_oranges,_grey, _greyoranges, possiblities)
-        print("Possible words:")
-        print(possiblities)
+        if loop_number > 0:
+            print("Possible words: {}".format(possiblities))
         if len(possiblities) == 1:
             print("solve found: " + list(possiblities)[0])
             break
@@ -145,11 +152,13 @@ def test_run(words):
         print("Best words using current params:")
         print(w)
         guess = input("Type your guess:\n")
-        greeninputs = greeninput()
+        if guess == "stop":
+            break
+        greeninputs = green_input()
         for x in range(5):
             if greeninputs[x] != " ":
                 _greens[x] = greeninputs[x]
-        orange = orangeinput()
+        orange = orange_input()
         for x in range(5):
             if orange[x] != " ":
                 _greyoranges[x].add(orange[x])
@@ -165,27 +174,35 @@ def test_run(words):
             our_map[char] -= 1
         greys = set([x for x in our_map.keys() if our_map[x] > 0])
         _grey.update(greys)
+        loop_number += 1
         
 
-def greeninput():
-    greentest = input("Insert all green characters, spaces for non greens:\n")
-    galphatest = greentest.replace(" ", "")
+def green_input():
+    green_test = input("Insert all green characters, spaces for non greens:\n")
+    green_test_alpha = green_test.replace(" ", "")
 
-    if (galphatest.isalpha() and len(greentest) == 5) or greentest == "     ":
-        return greentest
+    if (green_test_alpha.isalpha() and len(green_test) == 5):
+        return green_test
+    elif not green_test:
+        green_test = "     "
+        return green_test
     else:
         print("Wrong input, try again\n")
-        return greeninput()
+        return green_input()
 
 
-def orangeinput(): 
-    orangetest = input("Insert all oranges, spaces for non oranges:\n")
-    orangealphatest = orangetest.replace(" ", "")
-    if (orangealphatest.isalpha() and len(orangetest) == 5) or orangetest == "     ":
-        return orangetest
+def orange_input(): 
+    orange_test = input("Insert all oranges, spaces for non oranges:\n")
+    orangealphatest = orange_test.replace(" ", "")
+    
+    if (orangealphatest.isalpha() and len(orange_test) == 5):
+        return orange_test
+    elif not orange_test:
+        orange_test = "     "
+        return orange_test
     else:
         print("Wrong input, try again\n")
-        return orangeinput()
+        return orange_input()
     
     
 def main():
