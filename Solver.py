@@ -118,11 +118,6 @@ def bestword(words):
 
 
 def test_run(words):
-    """
-    The current solve found part only gives the solution when you literally type it in.
-    We could swap to using seperate lists for the answers and guesses.
-    _greens gets messed up when the guess doesn't use the previous greens
-    """
     _greens = [None, None, None, None, None]
     _oranges = set()
     _greyoranges = [set(),set(),set(),set(),set()]
@@ -130,6 +125,7 @@ def test_run(words):
     possiblities = words
     guesslist = words
     loop_number = 0
+    
     while True:
         print("Loop number: {}".format(loop_number))
         print("Green letters:", _greens)
@@ -178,6 +174,7 @@ def test_run(words):
         
 
 def green_input():
+    # Checking the input for green, specifically non alpha characters
     green_test = input("Insert all green characters, spaces for non greens:\n")
     green_test_alpha = green_test.replace(" ", "")
 
@@ -192,6 +189,7 @@ def green_input():
 
 
 def orange_input(): 
+    # Checking the input for orange, specifically non alpha characters
     orange_test = input("Insert all oranges, spaces for non oranges:\n")
     orangealphatest = orange_test.replace(" ", "")
     
