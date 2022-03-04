@@ -1,5 +1,6 @@
 from pathlib import Path
 from collections import defaultdict
+from sys import exit
    
     
 def checkgreens(green, word):
@@ -129,40 +130,51 @@ def test_run(words):
     while True:
         print("Loop number: {}".format(loop_number))
         print("Green letters:", _greens)
+        
         if len(_oranges) == 0:
             print("There are no orange letters")
         else:
             print("Orange letters:", _oranges)
+            
         if len(_grey) == 0:
             print("There are no grey letters")
         else:
             print("Grey letters:", _grey)
+            
         possiblities = parsewords(_greens,_oranges,_grey, _greyoranges, possiblities)
+        
         if loop_number > 0:
             print("Possible words: {}".format(possiblities))
         if len(possiblities) == 1:
             print("solve found: " + list(possiblities)[0])
-            break
+            exit()
+        
         guesslist = parseguesses(_oranges,_grey, _greyoranges, words)
         w = bestguess(possiblities, guesslist)
+        
         print("Best words using current params:")
         print(w)
+        
         guess = input("Type your guess:\n")
         if guess == "stop":
-            break
+            exit()
+        
         greeninputs = green_input()
+        if greeninputs == "stop":
+            exit()
         for x in range(5):
             if greeninputs[x] != " ":
                 _greens[x] = greeninputs[x]
+                
         orange = orange_input()
+        if orange == "stop":
+            exit()
         for x in range(5):
             if orange[x] != " ":
                 _greyoranges[x].add(orange[x])
-        orange = orange.replace(" ", "")
-        # Can't take x directly from green, overwrites _greens
-        # Check for letters that are already there 
-        
+        orange = orange.replace(" ", "")        
         _oranges = set(list(orange)).union(_oranges) - set(list(greeninputs))
+
         our_map = defaultdict(lambda:0)
         for char in guess:
             our_map[char] += 1
@@ -183,6 +195,8 @@ def green_input():
     elif not green_test:
         green_test = "     "
         return green_test
+    elif green_test == "stop":
+        return "stop"
     else:
         print("Wrong input, try again\n")
         return green_input()
@@ -198,14 +212,16 @@ def orange_input():
     elif not orange_test:
         orange_test = "     "
         return orange_test
+    elif orange_test == "stop":
+        return "stop"
     else:
         print("Wrong input, try again\n")
         return orange_input()
     
     
 def main():
-    with open(Path(__file__).parent / "FLAW.txt") as RawFLAWList:
-        words = RawFLAWList.read().splitlines()
+    with open(Path(__file__).parent / "FLAW.txt") as raw_flaw_list:
+        words = raw_flaw_list.read().splitlines()
         test_run(words)
 
 
