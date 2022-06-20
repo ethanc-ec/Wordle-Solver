@@ -155,7 +155,7 @@ def test_run(words):
         print("Best words using current params:")
         print(w)
         
-        guess = input("Type your guess:\n")
+        guess = input("Type your guess (or stop to end the program):\n")
         if guess == "stop":
             exit()
         
